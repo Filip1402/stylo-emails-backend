@@ -6,6 +6,7 @@ require("dotenv").config()
 
 var indexRouter = require('./src/routes/index');
 var usersRouter = require('./src/routes/users');
+var activationMailRouter = require('./src/routes/mail');
 
 var app = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use("/", activationMailRouter)
 
 
 module.exports = app;
