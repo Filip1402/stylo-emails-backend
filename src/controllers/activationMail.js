@@ -16,8 +16,8 @@ async function sendActivationMail(req, res) {
       from: "Stylo@gmail.com",
       to: `${email}`,
       subject: "Account Verification Link",
-      text: `Hello, please activate your account using the following link: ${link}/activation_token=${token}`,
-      html: `<p>Hello, please activate your account using the following link: <a href = ${link}/activation_token=${token}>Activation link</a></p>`
+      text: `Hello, please activate your account using the following link: ${link}?activation_token=${token}`,
+      html: `<p>Hello, please activate your account using the following link: <a href = ${link}?activation_token=${token}>Activation link</a></p>`
     });
     return res.status(200).json({ success: "Mail sent" });
   } catch (error) {
