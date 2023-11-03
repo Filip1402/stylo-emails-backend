@@ -1,5 +1,7 @@
 const { sendingMail } = require("../middlewares/mailer");
 const { validationResult } = require("express-validator");
+const link = "http://localhost:5173/user/activation"
+
 
 async function sendActivationMail(req, res) {
   const errors = validationResult(req);
@@ -8,12 +10,14 @@ async function sendActivationMail(req, res) {
   }
 
   const email = req.query["email"];
+  const token = req.query["activation_token"]
   try {
     sendingMail({
       from: "Stylo@gmail.com",
       to: `${email}`,
       subject: "Account Verification Link",
-      text: `Hello, please activate your account`,
+      text: `Hello, please activate your account using the following link: ${link}/activation_token=${token}`,
+      html: `<p>Hello, please activate your account using the following link: <a href = ${link}/activation_token=${token}>Activation link</a></p>`
     });
     return res.status(200).json({ success: "Mail sent" });
   } catch (error) {
