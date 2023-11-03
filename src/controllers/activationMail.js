@@ -9,8 +9,8 @@ async function sendActivationMail(req, res) {
     return res.status(400).json({ error: errors.array()[0].msg });
   }
 
-  const email = req.query["email"];
-  const token = req.query["activation_token"]
+  const email = req.body["email"];
+  const token = req.body["activation_token"]
   try {
     sendingMail({
       from: "Stylo@gmail.com",
