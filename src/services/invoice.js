@@ -3,7 +3,8 @@ const PDFDocument = require("pdfkit");
 
 function createInvoice(invoice, path) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
-
+  doc.registerFont('Bold', __dirname + '/../assets/Roboto-Bold.ttf')
+  doc.registerFont('Main', __dirname + '/../assets/Roboto-Medium.ttf')
   generateHeader(doc);
   generateCustomerInformation(doc, invoice);
   generateInvoiceTable(doc, invoice);
@@ -15,10 +16,11 @@ function createInvoice(invoice, path) {
 
 function generateHeader(doc) {
   doc
-    .image("src/assets/logo.png", 50, 45, { width: 50 })
+    .image("src/assets/logo.png", 50, 45, { width: 100 })
     .fillColor("#444444")
     .fontSize(20)
-    .text("Stylo shoes.", 200, 50, { align: "right" })
+    .font("Main")
+    .text("Stylo.", 200, 50, { align: "right" })
     .moveDown();
 }
 
@@ -26,7 +28,8 @@ function generateCustomerInformation(doc, invoice) {
   doc
     .fillColor("#444444")
     .fontSize(20)
-    .text("Invoice", 50, 160);
+    .font("Main")
+    .text("Račun", 50, 160);
 
   generateHr(doc, 185);
 
@@ -34,12 +37,12 @@ function generateCustomerInformation(doc, invoice) {
 
   doc
     .fontSize(10)
-    .text("Invoice Date:", 50, customerInformationTop + 15)
+    .text("Datum računa:", 50, customerInformationTop + 15)
     .text(formatDate(new Date()), 150, customerInformationTop + 15)
 
-    .font("Helvetica-Bold")
+    .font("Bold")
     .text(invoice.email, 300, customerInformationTop)
-    .font("Helvetica")
+    .font("Main")
     .text(invoice.shipping.address, 300, customerInformationTop + 15)
     .text(
       invoice.shipping.streetName +
@@ -63,17 +66,17 @@ function generateInvoiceTable(doc, invoice) {
   let i;
   const invoiceTableTop = 330;
 
-  doc.font("Helvetica-Bold");
+  doc.font("Bold");
   generateTableRow(
     doc,
     invoiceTableTop,
-    "Item",
-    "Unit Cost",
-    "Quantity",
-    "Line Total"
+    "Stavka",
+    "Cijena komada",
+    "Komada",
+    "Ukupno"
   );
   generateHr(doc, invoiceTableTop + 20);
-  doc.font("Helvetica");
+  doc.font("Main");
 
   for (i = 0; i < invoice.items.length; i++) {
     const item = invoice.items[i];
@@ -96,18 +99,18 @@ function generateInvoiceTable(doc, invoice) {
     subtotalPosition,
     "",
     "",
-    "Subtotal",
+    "Sveukupno",
     "",
     formatCurrency(invoice.subtotal)
   );
-  doc.font("Helvetica");
+  doc.font("Main");
 }
 
 function generateFooter(doc) {
   doc
     .fontSize(10)
     .text(
-      "Thank you for your business.",
+      "Hvala Vam na kupovini!.",
       50,
       780,
       { align: "center", width: 500 }
@@ -126,9 +129,9 @@ function generateTableRow(
   doc
     .fontSize(10)
     .text(item, 50, y)
-    .text(description, 150, y)
+    .text(description, 250, y)
     .text(unitCost, 280, y, { width: 90, align: "right" })
-    .text(quantity, 370, y, { width: 90, align: "right" })
+    .text(quantity, 455, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
