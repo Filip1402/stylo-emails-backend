@@ -43,7 +43,6 @@ function generateCustomerInformation(doc, invoice) {
     .font("Bold")
     .text(invoice.email, 300, customerInformationTop)
     .font("Main")
-    .text(invoice.shipping.address, 300, customerInformationTop + 15)
     .text(
       invoice.shipping.streetName +
       " " +
